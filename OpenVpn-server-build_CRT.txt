@@ -1,0 +1,95 @@
+以管理员身份打开一个Command Prompt程序，进入C:\Program Files\OpenVPN\easy-rsa。
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. All rights reserved.
+C:\Windows\system32>cd ../..
+C:\>cd "Program Files"
+C:\Program Files>cd OpenVPN
+C:\Program Files\OpenVPN>cd easy-rsa
+
+C:\Program Files\OpenVPN\easy-rsa>init-config
+修改vars.bat。
+
+运行
+C:\Program Files\OpenVPN\easy-rsa>vars.bat
+C:\Program Files\OpenVPN\easy-rsa>clean-all.bat
+主证书
+C:\Program Files\OpenVPN\easy-rsa>build-ca.bat
+服务端证书及密钥
+C:\Program Files\OpenVPN\easy-rsa>build-key-server.bat server
+Common Name: openvpn.miffyliye.org
+sign the certificate? y
+commit? y
+客户端证书及密钥
+C:\Program Files\OpenVPN\easy-rsa>build-key.bat miffyliye-tablet-s
+Common Name: miffyliye-tablet-s
+sign the certificate? y
+commit? y
+加密连接的参数文件
+C:\Program Files\OpenVPN\easy-rsa>build-dh.bat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+REM 写一半
+
+@rem ----[ This code block detects if the script is being running with admin PRIVILEGES If it isn't it pauses and then quits]-------
+@echo OFF
+NET SESSION >nul 2>&1
+IF %ERRORLEVEL% EQU 0 (
+    ECHO Administrator PRIVILEGES Detected! 
+) ELSE (
+   echo ######## ########  ########   #######  ########  
+   echo ##       ##     ## ##     ## ##     ## ##     ## 
+   echo ##       ##     ## ##     ## ##     ## ##     ## 
+   echo ######   ########  ########  ##     ## ########  
+   echo ##       ##   ##   ##   ##   ##     ## ##   ##   
+   echo ##       ##    ##  ##    ##  ##     ## ##    ##  
+   echo ######## ##     ## ##     ##  #######  ##     ## 
+   echo.
+   echo.
+   echo ####### ERROR: ADMINISTRATOR PRIVILEGES REQUIRED #########
+   echo This script must be run as administrator to work properly!  
+   echo If you're seeing this after clicking on a start menu icon, then right click on the shortcut and select "Run As Administrator".
+   echo ##########################################################
+   echo.
+   PAUSE
+   EXIT /B 1
+)
+@echo ON
+
+@echo off
+
+echo Killing openvpn
+tskill openvpn >NUL 2>NUL
+
+REM if "%1" == "h" goto begin 
+REM mshta vbscript:createobject("wscript.shell").run("%~nx0 h",2)(window.close)&&exit 
+REM :begin
+
+set work_dir=%~dp0
+set PATH=%work_dir%\bin;%PATH%
+
+for /f "delims=" %%i in ('where openvpn') do set openvpn_exec_path=%%i
+echo %openvpn_exec_path%
+for %%F in ("%openvpn_exec_path%") do set openvpn_path=%%~dpF
+echo %openvpn_path%
+cd %openvpn_path%\easy-rsa
+init-config
+
+pause
+
+
+pause
+
