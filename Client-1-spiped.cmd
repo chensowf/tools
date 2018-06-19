@@ -28,7 +28,7 @@ IF %ERRORLEVEL% EQU 0 (
 REM ####################
 REM 设置服务器地址和端口
 REM ####################
-set spiped_remote_srv_port="104.194.78.71:3388"
+set spiped_remote_srv_port="公网的ip:端口号"
 
 echo Killing spiped
 tskill spiped >NUL 2>NUL
